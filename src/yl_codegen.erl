@@ -6,6 +6,11 @@ generate(Parsed) ->
     {attribute, 0, module, 'Yl'},
     {attribute, 0, export, [{run, 0}]},
     {function, 0, run, 0, [
-      {clause, 0, [], [], [{atom, 0, hello}]}
+      {clause, 0, [], [], lists:map(fun(X) -> code(X) end, Parsed)}
     ]}
   ]).
+
+code({integer, Line, Value}) ->
+  {integer, Line, Value};
+code({{Op, Line}, A, B}) ->
+  {op, Line, Op, code(A), code(B)}.
