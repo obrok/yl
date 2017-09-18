@@ -8,8 +8,11 @@
 %%====================================================================
 
 %% escript Entry point
-main(Args) ->
-    io:format("Args: ~p~n", [Args]),
+main(_Args) ->
+    {ok, Content} = file:read_file('test.yl'),
+    ListContent = binary:bin_to_list(Content),
+    {ok, Result, _LastLine} = yl_tokenizer:string(ListContent),
+    io:format("~p~n", [Result]),
     erlang:halt(0).
 
 %%====================================================================
