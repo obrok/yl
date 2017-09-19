@@ -25,5 +25,6 @@ expression -> expression '/' expression : {'$2', '$1', '$3'}.
 expression -> expression '+' expression : {'$2', '$1', '$3'}.
 expression -> expression '-' expression : {'$2', '$1', '$3'}.
 expression -> integer : '$1'.
+expression -> lower_identifier : {call, '$1'}.
 
 Erlang code.

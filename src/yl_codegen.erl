@@ -23,4 +23,6 @@ function_declaration({declaration, {lower_identifier, Line, Name}, Body}) ->
 expression_code({integer, Line, Value}) ->
   {integer, Line, Value};
 expression_code({{Op, Line}, A, B}) ->
-  {op, Line, Op, expression_code(A), expression_code(B)}.
+  {op, Line, Op, expression_code(A), expression_code(B)};
+expression_code({call, {lower_identifier, Line, Value}}) ->
+  {call, Line, {atom, Line, list_to_atom(Value)}, []}.
