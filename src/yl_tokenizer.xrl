@@ -15,10 +15,10 @@ Rules.
   {token, {integer, TokenLine, list_to_integer(TokenChars)}}.
 
 {UpperIdent}{Ident}* :
-  {token, {upper_identifier, TokenLine, TokenChars}}.
+  {token, {upper_identifier, TokenLine, list_to_atom(TokenChars)}}.
 
 {LowerIdent}{Ident}* :
-  {token, {lower_identifier, TokenLine, TokenChars}}.
+  {token, {lower_identifier, TokenLine, list_to_atom(TokenChars)}}.
 
 =|\+|-|\*|/ :
   {token, {list_to_atom(TokenChars), TokenLine}}.
