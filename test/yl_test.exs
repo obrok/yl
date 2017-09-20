@@ -1,5 +1,5 @@
 defmodule YlTest do
-  use ExUnit.Case, async: false
+  use ExUnit.Case, async: true
 
   test "a basic module" do
     {:ok, mod} = :yl_compiler.compile("""

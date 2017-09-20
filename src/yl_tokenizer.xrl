@@ -4,7 +4,7 @@ D = [0-9]
 UpperIdent = [A-Z]
 LowerIdent = [a-z_]
 Ident = [A-Za-z0-9_]
-Keyword = module|where
+Keyword = module|where|type
 
 Rules.
 
@@ -20,7 +20,7 @@ Rules.
 {LowerIdent}{Ident}* :
   {token, {lower_identifier, TokenLine, list_to_atom(TokenChars)}}.
 
-=|\+|-|\*|/|\(|\)|;|\{|\}|, :
+=|\+|-|\*|/|\(|\)|;|\{|\}|,|\| :
   {token, {list_to_atom(TokenChars), TokenLine}}.
 
 \s|\n :

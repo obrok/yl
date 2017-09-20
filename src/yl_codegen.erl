@@ -5,13 +5,17 @@ generate(Parsed) ->
   compile:forms(code(Parsed)).
 
 code({module, {upper_identifier, Line, Name}, Body}) ->
-  Arities = lists:map(fun arity/1, Body),
-  Declarations = lists:map(fun function_declaration/1, Body),
+  Functions = lists:filter(fun is_function_declaration/1, Body),
+  Arities = lists:map(fun arity/1, Functions),
+  Declarations = lists:map(fun function_declaration/1, Functions),
   [
     {attribute, Line, module, Name},
     {attribute, Line, export, Arities}
     | Declarations
   ].
+
+is_function_declaration({declaration, _, _, _}) -> true;
+is_function_declaration(_) -> false.
 
 arity({declaration, {lower_identifier, _Line, Name}, Formals, _Body}) -> {Name, length(Formals)}.
 
