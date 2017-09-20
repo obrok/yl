@@ -35,5 +35,15 @@ defmodule YlTest do
     assert 14 = mod.x()
   end
 
+  test "constructing pairs" do
+    {:ok, mod} = :yl_compiler.compile("""
+      module #{module_name()} where
+
+      x = {1, 2};
+    """)
+
+    assert {1, 2} = mod.x()
+  end
+
   defp module_name(), do: "Basic#{:erlang.unique_integer([:positive, :monotonic])}"
 end

@@ -27,6 +27,8 @@ expression_code({integer, Line, Value}, _Formals) ->
   {integer, Line, Value};
 expression_code({{Op, Line}, A, B}, Formals) ->
   {op, Line, Op, expression_code(A, Formals), expression_code(B, Formals)};
+expression_code({pair, {_, Line}, Expr1, Expr2}, Formals) ->
+  {tuple, Line, [expression_code(Expr1, Formals), expression_code(Expr2, Formals)]};
 expression_code({call, {lower_identifier, Line, Value}, Args}, Formals) ->
   case is_formal(Value, Formals) of
     true -> {var, Line, Value};
