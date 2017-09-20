@@ -5,8 +5,8 @@ defmodule YlTest do
     {:ok, mod} = :yl_compiler.compile("""
       module #{module_name()} where
 
-      x = 2 + 3 * 10
-      y = 2
+      x = 2 + 3 * 10;
+      y = 2;
     """)
 
     assert 32 = mod.x()
@@ -17,8 +17,19 @@ defmodule YlTest do
     {:ok, mod} = :yl_compiler.compile("""
       module #{module_name()} where
 
-      x = y * y
-      y = 2
+      x = y * y;
+      y = 2;
+    """)
+
+    assert 4 = mod.x()
+  end
+
+  test "calling functions" do
+    {:ok, mod} = :yl_compiler.compile("""
+      module #{module_name()} where
+
+      x = y 2;
+      y a = a + 2;
     """)
 
     assert 4 = mod.x()
