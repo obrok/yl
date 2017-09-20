@@ -1,6 +1,6 @@
 Nonterminals grammar module_declaration module_body declaration expression call_list formals.
 
-Terminals upper_identifier lower_identifier integer module where '=' '+' '-' '*' '/' ';'.
+Terminals upper_identifier lower_identifier integer module where '=' '+' '-' '*' '/' ';' '(' ')'.
 
 Rootsymbol grammar.
 
@@ -32,6 +32,7 @@ expression -> expression '-' expression : {'$2', '$1', '$3'}.
 expression -> integer : '$1'.
 expression -> lower_identifier : {call, '$1', []}.
 expression -> lower_identifier call_list : {call, '$1', '$2'}.
+expression -> '(' expression ')' : '$2'.
 
 call_list -> expression : ['$1'].
 call_list -> expression call_list : ['$1' | '$2'].

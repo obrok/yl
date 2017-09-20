@@ -28,11 +28,11 @@ defmodule YlTest do
     {:ok, mod} = :yl_compiler.compile("""
       module #{module_name()} where
 
-      x = y 2;
-      y a = a + 2;
+      x = y 2 (2 * 3);
+      y a b = a + 2 * b;
     """)
 
-    assert 4 = mod.x()
+    assert 14 = mod.x()
   end
 
   defp module_name(), do: "Basic#{:erlang.unique_integer([:positive, :monotonic])}"
