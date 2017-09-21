@@ -50,8 +50,8 @@ call_list -> expression : ['$1'].
 call_list -> expression call_list : ['$1' | '$2'].
 
 expression -> integer : '$1'.
-expression -> '(' expression ')' : '$2'.
-expression -> '{' expression ',' expression '}' : {pair, '$1', '$2', '$4'}.
+expression -> '(' operator_expression ')' : '$2'.
+expression -> '{' operator_expression ',' operator_expression '}' : {pair, '$1', '$2', '$4'}.
 expression -> lower_identifier : {call, '$1', []}.
 
 Erlang code.

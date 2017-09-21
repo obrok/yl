@@ -33,10 +33,12 @@ expression_code({{Op, Line}, A, B}, Formals) ->
   {op, Line, Op, expression_code(A, Formals), expression_code(B, Formals)};
 expression_code({pair, {_, Line}, Expr1, Expr2}, Formals) ->
   {tuple, Line, [expression_code(Expr1, Formals), expression_code(Expr2, Formals)]};
-expression_code({call, {lower_identifier, Line, Value}, Args}, Formals) ->
+expression_code({call, {call, {lower_identifier, Line, Value}, []}, Args}, Formals) ->
+  {call, Line, {atom, Line, Value}, lists:map(fun(Arg) -> expression_code(Arg, Formals) end, Args)};
+expression_code({call, {lower_identifier, Line, Value}, []}, Formals) ->
   case is_formal(Value, Formals) of
     true -> {var, Line, Value};
-    false -> {call, Line, {atom, Line, Value}, lists:map(fun(Arg) -> expression_code(Arg, Formals) end, Args)}
+    false -> {call, Line, {atom, Line, Value}, []}
   end.
 
 is_formal(Name, Formals) ->
