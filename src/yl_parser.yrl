@@ -48,7 +48,7 @@ call_expression -> call_expression expression : {call, '$1', '$2'}.
 
 expression -> integer : '$1'.
 expression -> '(' operator_expression ')' : '$2'.
-expression -> '{' operator_expression ',' operator_expression '}' : {pair, '$1', '$2', '$4'}.
+expression -> '{' operator_expression ',' operator_expression '}' : {pair, '$2', '$4'}.
 expression -> lower_identifier : '$1'.
 
 Erlang code.

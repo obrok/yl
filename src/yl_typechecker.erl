@@ -9,7 +9,7 @@ typecheck({declaration, {lower_identifier, _, Name}, _Formals, Body}, Environmen
   add(Environment, Name, typecheck(Body, Environment));
 typecheck({integer, _, _}, _Environment) ->
   'Integer';
-typecheck({pair, _, A, B}, Environment) ->
+typecheck({pair, A, B}, Environment) ->
   {typecheck(A, Environment), typecheck(B, Environment)}.
 
 starting_environment() -> [#{}].

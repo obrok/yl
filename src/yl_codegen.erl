@@ -36,8 +36,8 @@ expression_code({integer, Line, Value}, _Formals) ->
   {integer, Line, Value};
 expression_code({{Op, Line}, A, B}, Formals) ->
   {op, Line, Op, expression_code(A, Formals), expression_code(B, Formals)};
-expression_code({pair, {_, Line}, Expr1, Expr2}, Formals) ->
-  {tuple, Line, [expression_code(Expr1, Formals), expression_code(Expr2, Formals)]};
+expression_code({pair, Expr1, Expr2}, Formals) ->
+  {tuple, line(Expr1), [expression_code(Expr1, Formals), expression_code(Expr2, Formals)]};
 expression_code({call, Fun, Arg}, Formals) ->
   {call, line(Fun), expression_code(Fun, Formals), [expression_code(Arg, Formals)]};
 expression_code({lower_identifier, Line, Value}, Formals) ->
