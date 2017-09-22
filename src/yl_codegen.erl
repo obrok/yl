@@ -17,12 +17,17 @@ code({module, {upper_identifier, Line, Name}, Body}) ->
 is_function_declaration({declaration, _, _, _}) -> true;
 is_function_declaration(_) -> false.
 
-arity({declaration, {lower_identifier, _Line, Name}, Formals, _Body}) -> {Name, length(Formals)}.
+arity({declaration, {lower_identifier, _Line, Name}, _Formals, _Body}) -> {Name, 0}.
 
 function_declaration({declaration, {lower_identifier, Line, Name}, Formals, Body}) ->
-  {function, Line, Name, length(Formals), [
-    {clause, Line, lists:map(fun argument/1, Formals), [], [expression_code(Body, Formals)]}
+  {function, Line, Name, 0, [
+    {clause, Line, [], [], [curry(Formals, expression_code(Body, Formals), Line)]}
   ]}.
+
+curry([], Code, _Line) -> Code;
+curry([First | Rest], Code, Line) ->
+  {'fun', Line, {clauses, [
+    {clause, Line, [argument(First)], [], [curry(Rest, Code, Line)]}]}}.
 
 argument({lower_identifier, Line, Name}) ->
   {var, Line, Name}.
@@ -33,9 +38,9 @@ expression_code({{Op, Line}, A, B}, Formals) ->
   {op, Line, Op, expression_code(A, Formals), expression_code(B, Formals)};
 expression_code({pair, {_, Line}, Expr1, Expr2}, Formals) ->
   {tuple, Line, [expression_code(Expr1, Formals), expression_code(Expr2, Formals)]};
-expression_code({call, {call, {lower_identifier, Line, Value}, []}, Args}, Formals) ->
-  {call, Line, {atom, Line, Value}, lists:map(fun(Arg) -> expression_code(Arg, Formals) end, Args)};
-expression_code({call, {lower_identifier, Line, Value}, []}, Formals) ->
+expression_code({call, Fun, Arg}, Formals) ->
+  {call, 0, expression_code(Fun, Formals), [expression_code(Arg, Formals)]};
+expression_code({lower_identifier, Line, Value}, Formals) ->
   case is_formal(Value, Formals) of
     true -> {var, Line, Value};
     false -> {call, Line, {atom, Line, Value}, []}

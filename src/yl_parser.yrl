@@ -1,4 +1,4 @@
-Nonterminals grammar module_declaration module_body declaration expression call_list formals type_spec call_expression
+Nonterminals grammar module_declaration module_body declaration expression formals type_spec call_expression
 operator_expression operator.
 
 Terminals upper_identifier lower_identifier integer module where type '=' '+' '-' '*' '/' ';' '(' ')' '{' '}' ',' '|'
@@ -44,14 +44,11 @@ operator -> '/' : '$1'.
 operator -> '-' : '$1'.
 
 call_expression -> expression : '$1'.
-call_expression -> expression call_list : {call, '$1', '$2'}.
-
-call_list -> expression : ['$1'].
-call_list -> expression call_list : ['$1' | '$2'].
+call_expression -> call_expression expression : {call, '$1', '$2'}.
 
 expression -> integer : '$1'.
 expression -> '(' operator_expression ')' : '$2'.
 expression -> '{' operator_expression ',' operator_expression '}' : {pair, '$1', '$2', '$4'}.
-expression -> lower_identifier : {call, '$1', []}.
+expression -> lower_identifier : '$1'.
 
 Erlang code.

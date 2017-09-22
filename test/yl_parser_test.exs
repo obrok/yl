@@ -4,8 +4,8 @@ defmodule YlParserTest do
   test "application vs. application precedence" do
     assert {:ok, {:module, _, [
       {:declaration, {:lower_identifier, _, :x}, [],
-        {:call, {:call, {:lower_identifier, _, :foo}, []}, _}}]}} =
-    :yl_compiler.parse("""
+        {:call, {:call, {:lower_identifier, _, :foo}, {:lower_identifier, _, :bar}}, {:lower_identifier, _, :baz}}}]}}
+    = :yl_compiler.parse("""
       module Test where
 
       x = foo bar baz;
@@ -15,7 +15,7 @@ defmodule YlParserTest do
   test "operator vs. function application precedence" do
     assert {:ok, {:module, _, [
       {:declaration, {:lower_identifier, _, :x}, [],
-        {{:+, _}, {:call, {:call, {:lower_identifier, _, :foo}, _}, _}, {:call, _, _}}}]}} =
+        {{:+, _}, {:call, {:lower_identifier, _, :foo}, _}, {:call, _, _}}}]}} =
     :yl_compiler.parse("""
       module Test where
 

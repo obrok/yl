@@ -45,5 +45,16 @@ defmodule YlTest do
     assert {4, 8} = mod.x()
   end
 
+  test "partial application" do
+    {:ok, mod} = :yl_compiler.compile("""
+      module #{module_name()} where
+
+      x = (y 2) 3;
+      y a b = a + b;
+    """)
+
+    assert 5 = mod.x()
+  end
+
   defp module_name(), do: "Basic#{:erlang.unique_integer([:positive, :monotonic])}"
 end
