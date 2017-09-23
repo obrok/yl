@@ -1,18 +1,28 @@
 -module(yl_typechecker).
 -export([typecheck/1]).
 
-typecheck(AST) -> {ok, typecheck(AST, starting_environment())}.
+typecheck(AST) ->
+  case typecheck(AST, starting_environment()) of
+    {[TopContext | _Rest], Errors} when map_size(Errors) == 0 -> {ok, TopContext};
+    {_, Errors} -> {error, Errors}
+  end.
 
 typecheck({module, _, Body}, Environment) ->
   lists:foldl(fun(X, Env) -> typecheck(X, Env) end, Environment, Body);
 typecheck({declaration, {lower_identifier, _, Name}, _Formals, Body}, Environment) ->
   add(Environment, Name, typecheck(Body, Environment));
+typecheck({type_annotation, {lower_identifier, _, Name}, Type}, Environment) ->
+  add(Environment, Name, Type);
 typecheck({integer, _, _}, _Environment) ->
   'Integer';
 typecheck({pair, A, B}, Environment) ->
   {typecheck(A, Environment), typecheck(B, Environment)}.
 
-starting_environment() -> [#{}].
+add({[CurrentContext | Rest], Errors}, Name, Type) ->
+  case maps:get(Name, CurrentContext, not_found) of
+    not_found -> {[maps:put(Name, Type, CurrentContext) | Rest], Errors};
+    Type -> {[CurrentContext | Rest], Errors};
+    Other -> {[CurrentContext | Rest], maps:put(Name, {conflict, [Other, Type]}, Errors)}
+  end.
 
-add([CurrentContext | Rest], Name, Type) ->
-  [maps:put(Name, Type, CurrentContext) | Rest].
+starting_environment() -> {[#{}], #{}}.

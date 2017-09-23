@@ -26,11 +26,11 @@ module_body -> declaration : ['$1'].
 declaration -> lower_identifier '=' operator_expression ';' : {declaration, '$1', [], '$3'}.
 declaration -> lower_identifier formals '=' operator_expression ';' : {declaration, '$1', '$2', '$4'}.
 declaration -> type upper_identifier '=' type_spec ';' : {type, '$2', '$4'}.
-declaration -> lower_identifier ':' type_spec ';' : {type_annotation, '$1', '$2'}.
+declaration -> lower_identifier ':' type_spec ';' : {type_annotation, '$1', '$3'}.
 
-type_spec -> upper_identifier : '$1'.
-type_spec -> type_spec '|' type_spec : {'or', '$1', '$2'}.
-type_spec -> '{' type_spec ',' type_spec '}' : {'$1', '$2'}.
+type_spec -> upper_identifier : element(3, '$1').
+type_spec -> type_spec '|' type_spec : {'or', '$1', '$3'}.
+type_spec -> '{' type_spec ',' type_spec '}' : {'$2', '$4'}.
 
 formals -> lower_identifier formals : ['$1' | '$2'].
 formals -> lower_identifier : ['$1'].
