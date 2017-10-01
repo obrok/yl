@@ -1,7 +1,9 @@
 defmodule YlTokenizerTest do
   use ExUnit.Case, async: true
 
-  test "ignoring tabs"
+  test "ignoring tabs" do
+    assert {:ok, [_, _], _} = tokenize("token\ttoken")
+  end
 
   test "tokenizing a simple string" do
     assert {:ok, [{:string, _, "Hello world"}], _} = tokenize(~S["Hello world"])

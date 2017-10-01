@@ -29,7 +29,7 @@ Rules.
 =|\+|-|\*|/|\(|\)|;|\{|\}|,|\||\: :
   {token, {list_to_atom(TokenChars), TokenLine}}.
 
-\s|\n :
+\s|\n|\t :
   skip_token.
 
 Erlang code.
