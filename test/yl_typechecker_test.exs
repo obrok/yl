@@ -2,11 +2,12 @@ defmodule YlTypeCheckerTest do
   use ExUnit.Case, async: true
 
   test "typechecking simple declarations" do
-    assert {:ok, %{x: :Integer, y: {:Integer, :Integer}}} = typecheck("""
+    assert {:ok, %{x: :Integer, y: {:pair, :Integer, :Integer}, z: :String}} = typecheck("""
       module #{module_name()} where
 
       x = 2;
       y = {2, 2};
+      z = "Hello";
     """)
   end
 
@@ -20,7 +21,7 @@ defmodule YlTypeCheckerTest do
   end
 
   test "typechecking fails when annotation does not match actual type" do
-    assert {:error, %{x: {:conflict, [:Integer, {:Integer, :Integer}]}}} = typecheck("""
+    assert {:error, %{x: {:conflict, [:Integer, {:pair, :Integer, :Integer}]}}} = typecheck("""
       module #{module_name()} where
 
       x : Integer;

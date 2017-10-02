@@ -15,8 +15,12 @@ typecheck({type_annotation, {lower_identifier, _, Name}, Type}, Environment) ->
   add(Environment, Name, Type);
 typecheck({integer, _, _}, _Environment) ->
   'Integer';
+typecheck({string, _, _}, _Environment) ->
+  'String';
+typecheck({lower_identifier, _, Name}, _Environment) ->
+  {var, Name};
 typecheck({pair, A, B}, Environment) ->
-  {typecheck(A, Environment), typecheck(B, Environment)}.
+  {pair, typecheck(A, Environment), typecheck(B, Environment)}.
 
 add({[CurrentContext | Rest], Errors}, Name, Type) ->
   case maps:get(Name, CurrentContext, not_found) of
