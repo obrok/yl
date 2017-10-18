@@ -34,6 +34,8 @@ argument({lower_identifier, Line, Name}) ->
 
 expression_code({integer, Line, Value}, _Formals) ->
   {integer, Line, Value};
+expression_code({string, Line, Value}, _Formals) ->
+  {call, Line, {remote, Line, {atom, Line, binary}, {atom, Line, list_to_bin}}, [{string, Line, Value}]};
 expression_code({{Op, Line}, A, B}, Formals) ->
   {op, Line, Op, expression_code(A, Formals), expression_code(B, Formals)};
 expression_code({pair, Expr1, Expr2}, Formals) ->
@@ -46,7 +48,7 @@ expression_code({lower_identifier, Line, Value}, Formals) ->
     false -> {call, Line, {atom, Line, Value}, []}
   end.
 
-line({intege, Line, _Value}) -> Line;
+line({integer, Line, _Value}) -> Line;
 line({lower_identifier, Line, _Value}) -> Line;
 line({{_Op, Line}, _, _}) -> Line;
 line({call, Fun, _Arg}) -> line(Fun).

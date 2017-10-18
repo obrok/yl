@@ -6,15 +6,18 @@ defmodule YlTokenizerTest do
   end
 
   test "tokenizing a simple string" do
-    assert {:ok, [{:string, _, "Hello world"}], _} = tokenize(~S["Hello world"])
+    {:ok, [{:string, _, result}], _} = tokenize(~S["Hello world"])
+    assert "Hello world" = to_string(result)
   end
 
   test "tokenizing a string with escaped quotes" do
-    assert {:ok, [{:string, _, ~S["Hello " world"]}], _} = tokenize(~S["\"Hello \" world\""])
+    {:ok, [{:string, _, result}], _} = tokenize(~S["\"Hello \" world\""])
+    assert ~S["Hello " world"] = to_string(result)
   end
 
   test "tokenizing a string with escaped backslashes" do
-    assert {:ok, [{:string, _, "\\Hello \\ world\\"}], _} = tokenize(~S["\\Hello \\ world\\"])
+    {:ok, [{:string, _, result}], _} = tokenize(~S["\\Hello \\ world\\"])
+    assert "\\Hello \\ world\\" = to_string(result)
   end
 
   def tokenize(binary) do

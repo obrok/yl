@@ -24,7 +24,7 @@ Rules.
   {token, {lower_identifier, TokenLine, list_to_atom(TokenChars)}}.
 
 "({StringContent}|{EscapedQuote}|{EscapedBackslash})*" :
-  {token, {string, TokenLine, list_to_binary(unescape(string:slice(TokenChars, 1, length(TokenChars) - 2)))}}.
+  {token, {string, TokenLine, unescape(string:slice(TokenChars, 1, length(TokenChars) - 2))}}.
 
 =|\+|-|\*|/|\(|\)|;|\{|\}|,|\||\: :
   {token, {list_to_atom(TokenChars), TokenLine}}.

@@ -56,5 +56,15 @@ defmodule YlTest do
     assert 5 = mod.x()
   end
 
+  test "strings" do
+    {:ok, mod} = :yl_compiler.compile("""
+      module #{module_name()} where
+
+      x = "Hello World";
+    """)
+
+    assert "Hello World" = mod.x()
+  end
+
   defp module_name(), do: "Basic#{:erlang.unique_integer([:positive, :monotonic])}"
 end
